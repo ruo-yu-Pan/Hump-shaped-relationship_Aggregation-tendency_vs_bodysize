@@ -1,10 +1,11 @@
 windowsFonts(NR = "Times New Roman")
 
 #2019/06/18 Plotting
-setwd("D:\\Ruo_data\\2019_Paper_Publish\\Code\\Git\\Data")
-fig_path = "D:\\Ruo_data\\2019_Paper_Publish\\Figure\\"
+wd = "D:/Ruo_data/2019_Paper_Publish/Code/Git/"
+setwd(wd)
+fig_path = "D:/Ruo_data/2019_Paper_Publish/Figure/"
 
-northsea <- read.csv("CPUE per length per subarea_2016-09-21_1965to2016_q1q3.csv", header = T, sep = ",")
+northsea <- read.csv("./Data/CPUE per length per subarea_2016-09-21_1965to2016_q1q3.csv", header = T, sep = ",")
 tot_sta<-as.data.frame(xtabs(~Subarea,data = northsea))
 
 # make the subarea symbol become true latitude and longtitude
@@ -36,7 +37,7 @@ lon_vec =  seq(min_lon-5.5,max_lon+5.5,grid_size_lon)
 jpeg(paste(fig_path,"NorthSea_subarea_map.jpeg",sep=""), width=7, height=9, units = "in",res=300)
 
 plot(c(min_lon,min_lat),xlim=c(min_lon-5,max_lon+5),
-     ylim=c(min_lat-2,max_lat+2),type="n",xlab = "Longtitude",ylab="Latitude",family = "NR",cex.lab=2)
+     ylim=c(min_lat-2,max_lat+2),type="n",xlab = "Longitude",ylab="Latitude",family = "NR",cex.lab=2)
 
 points(subarea_symb$long[-c(1:6)],subarea_symb$lat[-c(1:6)],pch=15,col="grey",cex=2.5)
 abline(v=lon_vec)
