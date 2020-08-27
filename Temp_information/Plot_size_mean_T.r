@@ -1,10 +1,12 @@
 
-# temperature data import #
+wd = "D:/Ruo_data/2019_Paper_Publish/Publish"
+setwd(wd)
 
+# temperature data import #
 # bottom
-allsp_bT <- read.csv("D:\\Ruo_data\\2019_Paper_Publish\\Code\\Result_data_for_analysis\\mean_bottom_Temperature.csv")
+allsp_bT <- read.csv("./SizeAggregTend_data/compiled/bottomT/mean_bottom_Temperature_trans.csv")
 # surface
-pelsp_sst<- read.csv("D:\\Ruo_data\\2019_Paper_Publish\\Code\\Result_data_for_analysis\\mean_surface_Temperature_pela.csv")
+pelsp_sst<- read.csv("./SizeAggregTend_data/compiled/sst/size_mean_sst.csv")
 
 # compile bT and sst
 allsp_T <- allsp_bT
@@ -14,16 +16,13 @@ allsp_T$sp_ID <- rep(c(1:9),each=32)
 allsp_T$quarter <- rep(c(rep("Q1",16),rep("Q3",16)),9)
 
 
-
-
 # plot temperature data #
 
 sp_common_name <- c("Herring","Cod","Haddock","Whiting","Plaice","Saithe",
                     "Mackerel","Sprat","Norwaypout")
 
 
-
-jpeg("D:\\Ruo_data\\2019_Paper_Publish\\Figure\\appendix\\size_mean_T_1.jpeg", width=3, height=6.5, units = "in",res=300)
+jpeg("./SizeAggregTend_data/output/fig/FigS2_size_mean_T_1.jpeg", width=3, height=6.5, units = "in",res=300)
 par(mfrow=c(5,2))
 for(i in c(1,3,5,7,9)){
   sp_T <- allsp_T[which(allsp_T$sp_ID==i),]
@@ -38,7 +37,7 @@ for(i in c(1,3,5,7,9)){
 }
 dev.off()
 
-jpeg("D:\\Ruo_data\\2019_Paper_Publish\\Figure\\appendix\\size_mean_T_2.jpeg", width=3, height=6.5, units = "in",res=300)
+jpeg("./SizeAggregTend_data/output/fig/FigS2_size_mean_T_2.jpeg", width=3, height=6.5, units = "in",res=300)
 par(mfrow=c(5,2))
 for(i in c(2,4,6,8)){
   sp_T <- allsp_T[which(allsp_T$sp_ID==i),]

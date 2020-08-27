@@ -3,18 +3,22 @@
 ###########   function for size-based Taylor's power law   ##############
 #########################################################################
 
-colo <- c("red","darkorange","chartreuse3","springgreen3","cyan3","darkblue","darkorchid2","deeppink1")
 library("rgr")
 library("boot")
 
 ##
-# spec_data    : the northsea data of species in different quarters
-# stage_length : the length range of each size classes
-# spe_n_hab    : the subarea that is not habitat
-# spe.name     : species name that we want to show on the plot
+# spec_data         : the northsea data of species in different quarters
+# stage_length      : the length range of each size classes
+# spe_n_hab         : the subarea that is not habitat
+# spe.name          : species name that we want to show on the plot
+# boot_result_path  : the path to store bootstrapped result
 ##
 
-sb_TL_fuc <- function(spec_data=sp.2.Q1,stage_length_range=sp_length_range.1,spe_n_hab=sp.hab.info,spe.name=paste(sp_c_name," Q1")){
+sb_TL_fuc <- function(spec_data=sp.2.Q1,
+                      stage_length_range=sp_length_range.1,
+                      spe_n_hab=sp.hab.info,
+                      spe.name=paste(sp_c_name," Q1"),
+                      boot_result_path){
   
   fish <- spec_data 
   # exclude the subarea data which is not in habitat
@@ -24,7 +28,7 @@ sb_TL_fuc <- function(spec_data=sp.2.Q1,stage_length_range=sp_length_range.1,spe
     }
   }
   
-  # set function for calculate the mean and variance of abundance
+  # make function for calculate the mean and variance of abundance
   fish.length_range <- stage_length_range
   mean_var <-function(x,y){
     fish_stage <- fish[which(fish$LngtClas < x & fish$LngtClas >= y),]
@@ -32,7 +36,7 @@ sb_TL_fuc <- function(spec_data=sp.2.Q1,stage_length_range=sp_length_range.1,spe
                               list(fish_stage$Year,fish_stage$Subarea),sum)#calculate the density of fish whose size is within certain length for each year and station.
     
     fish_totalcount[which(is.na(fish_totalcount)==T)]=0
-    station_n <- 194-length(spe_n_hab[[3]]$subarea)
+    station_n <- 193-length(spe_n_hab[[3]]$subarea)
     mean <- apply(fish_totalcount,1,sum)/station_n
     var <- apply(fish_totalcount,1,function(x){sum((x-mean(x)/station_n)^2)/(station_n-1)})
     m_v <- cbind(mean,var)
@@ -64,8 +68,8 @@ sb_TL_fuc <- function(spec_data=sp.2.Q1,stage_length_range=sp_length_range.1,spe
     b.bca.CI <- boot.ci(b.bs,conf = 0.95,type = "bca")
     a.bs <- boot(stage.log,TL.bs_func.2,R=999)
     a.bca.CI <- boot.ci(a.bs,conf = 0.95,type = "bca")
-    Path <- "D:\\Ruo_data\\2019_Paper_Publish\\Code\\Result_data_for_analysis\\TL_boot_999bvalue\\"
-    write.csv(b.bs$t,paste(Path,spe.name,"_",as.character(sizeclas),".csv",sep = ""))
+    Path <- boot_result_path
+    write.csv(b.bs$t,paste0(Path,spe.name,"_",as.character(sizeclas),".csv"))
     
     # compile data
     TL <- c(slope,intercept,r_squared,mean(stage$mean),a.bca.CI$bca[4:5],b.bca.CI$bca[4:5])
@@ -87,6 +91,8 @@ sb_TL_fuc <- function(spec_data=sp.2.Q1,stage_length_range=sp_length_range.1,spe
   colnames(TL_result) <- c("b","a","r_squared","mean.25y","a.low.95CI","a.upp.95CI","b.low.95CI","b.upp.95CI")
   TL_result$ageclass <-c(1:(length(stage_length_range)-1))
   colnames(TL.tot)[3] <-"ageclass"
+  
+  # plot linear fitting result
   
   #par(mfrow=c(1,1),mar=c(4,4,3,1),oma=c(0,0,0,0))
   #plot(c(0,0),xlim=c(min(TL.tot$mean)-1,max(TL.tot$mean)+1),

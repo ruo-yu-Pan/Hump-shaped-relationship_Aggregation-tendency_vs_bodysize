@@ -1,18 +1,23 @@
 
-##########################################################################
-# Examine the characteristics of hump shape for each species :
-# peak, peak location, uphill slope, downhill slope 
-##########################################################################
-setwd("D:\\Ruo_data\\2019_Paper_Publish\\Code\\Result_data_for_analysis")
-sp_TL.result <- read.csv("sp_TL.result_all_16classes.csv",header = T)
+windowsFonts(newrom = windowsFont("Times New Roman"))
+
+# import data
+
+wd = "D:/Ruo_data/2019_Paper_Publish/Publish"
+setwd(wd)
+
+sp_TL.result <- read.csv("./SizeAggregTend_data/output/1_size_TL/all_TL_result_16_compiled.csv",stringsAsFactors = F,sep=",",header = T)
+sp_TL.result$spwn <- as.factor(sp_TL.result$spwn)
+sp_TL.result$quarter <- as.factor(sp_TL.result$quarter)
 sp_TL.result$sp_ID <- as.factor(sp_TL.result$sp_ID)
+
+
+####### species fitted respectively #################################
 
 library("mgcv")
 library("itsadug")
 library("tidymv")
 
-
-####### species fitted respectively #################################
 sp_common_name <- c("Herring","Cod","Haddock","Whiting","Plaice",
                     "Saithe", "Mackerel","Sprat","Norwaypout")
 
@@ -21,8 +26,7 @@ sp_resp_humppeak <- NULL
 sp.resp_slope <- NULL
 
 
-
-jpeg("D:\\Ruo_data\\2019_Paper_Publish\\Figure\\appendix\\sp_resp_fit_byQ.jpeg", width=6, height=5, units = "in",res=300)
+jpeg("./SizeAggregTend_data/output/fig/Fig4_sp_resp_fit_byQ.jpeg", width=6, height=5, units = "in",res=300)
 
 par(mfrow=c(3,3),mar=c(4,3,3,1),oma=c(2,2,1,0),xpd=F)
 for(i in 1:9){
@@ -57,12 +61,12 @@ for(i in 1:9){
     
     ## hump shape peak ##
     
-    p_nd_Q1 <- expand.grid(std_L = seq(-0.852,0.788,length=500),
+    p_nd_Q1 <- expand.grid(std_L = seq(-0.852,0.714,length=500),
                             quarter = factor(c("Q1")))
     pred_b_Q1 <- predict(sp_fit, newdata=p_nd_Q1,type="response")
     p_nd_Q1$fit <- pred_b_Q1
 
-    p_nd_Q3 <- expand.grid(std_L = seq(-0.852,0.788,length=500),
+    p_nd_Q3 <- expand.grid(std_L = seq(-0.852,0.714,length=500),
                          quarter = factor(c("Q3")))
     pred_b_Q3 <- predict(sp_fit, newdata=p_nd_Q3,type="response")
     p_nd_Q3$fit <- pred_b_Q3
@@ -119,9 +123,6 @@ for(i in 1:9){
       }else{lar_line_Rst_3 <- matrix(0,nrow = 1,ncol=5)}
     
     
-    
-    
-    
     sp.resp_slope <- rbind(sp.resp_slope,
                            #Q1
                            cbind(
@@ -145,14 +146,16 @@ mtext("Standardized length",outer = T,cex=1,side=1,family="newrom")
 
 dev.off()
 
+
+
 sp_resp_humppeak <- as.data.frame(sp_resp_humppeak)
 sp_resp_humppeak$quarter <- rep(c("Q1","Q3"),9)
 
 sp.resp_slope <- as.data.frame(sp.resp_slope)
 sp.resp_slope$sp <- rep(c(1:9),each=4)
 
-write.csv(sp_fit_summary,"sp_fit_summary_16class_byQ_excludeT.csv")
-write.csv(sp_resp_humppeak,"sp_resp_humppeak_16class_byQ_excludeT.csv")
-write.csv(sp.resp_slope,"sp.resp_slope_16class_byQ_excludeT.csv")
+write.csv(sp_fit_summary,"./SizeAggregTend_data/output/3_humpshape_characteristics/sp_resp_fit_summary.csv")
+write.csv(sp_resp_humppeak,"./SizeAggregTend_data/output/3_humpshape_characteristics/sp_resp_humppeak.csv")
+write.csv(sp.resp_slope,"./SizeAggregTend_data/output/3_humpshape_characteristics/sp_resp_slope.csv")
 
 

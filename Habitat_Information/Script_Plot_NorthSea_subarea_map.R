@@ -1,20 +1,13 @@
 windowsFonts(NR = "Times New Roman")
 
-#2019/06/18 Plotting
-wd = "D:/Ruo_data/2019_Paper_Publish/Code/Git/"
+wd = "D:/Ruo_data/2019_Paper_Publish/Publish"
 setwd(wd)
-fig_path = "D:/Ruo_data/2019_Paper_Publish/Figure/"
+fig_path = "D:/Ruo_data/2019_Paper_Publish/Publish/SizeAggregTend_data/output/fig/"
 
-northsea <- read.csv("./Data/CPUE per length per subarea_2016-09-21_1965to2016_q1q3.csv", header = T, sep = ",")
+northsea <- read.csv("./SizeAggregTend_data/compiled/CPUE_per_length_per_subarea_clean.csv", header = T, sep = ",")
 tot_sta<-as.data.frame(xtabs(~Subarea,data = northsea))
+subarea_symb <- read.csv("./SizeAggregTend_data/compiled/subarea_symb.csv")
 
-# make the subarea symbol become true latitude and longtitude
-lat <-seq(49.75,61.75,0.5)
-long <- seq(-3.5,12.5,1)
-
-subarea_symb <- data.frame(subarea=tot_sta[,1],
-                           lat = lat[as.integer(factor(substr(tot_sta[,1],1,2)))],
-                           long = long[as.integer(factor(substr(tot_sta[,1],3,4)))])
 
 ### North Sea map ############################
 
@@ -34,7 +27,8 @@ grid_size_lon = 1
 lat_vec =  seq(min_lat-2.25,max_lat+2.25,grid_size_lat)
 lon_vec =  seq(min_lon-5.5,max_lon+5.5,grid_size_lon)
 
-jpeg(paste(fig_path,"NorthSea_subarea_map.jpeg",sep=""), width=7, height=9, units = "in",res=300)
+# plot
+jpeg(paste0(fig_path,"Fig1_NorthSea_subarea_map.jpeg"), width=7, height=9, units = "in",res=300)
 
 plot(c(min_lon,min_lat),xlim=c(min_lon-5,max_lon+5),
      ylim=c(min_lat-2,max_lat+2),type="n",xlab = "Longitude",ylab="Latitude",family = "NR",cex.lab=2)

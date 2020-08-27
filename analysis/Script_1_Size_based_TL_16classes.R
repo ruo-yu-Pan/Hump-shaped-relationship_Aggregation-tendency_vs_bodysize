@@ -1,24 +1,24 @@
 windowsFonts(newrom = windowsFont("Times New Roman"))
 
-setwd("D:\\Ruo_data\\2017_Master\\Master_Research\\Data\\NorthSea\\Analysis")
-northsea <- read.csv("CPUE per length per subarea_2016-09-21_1965to2016_q1q3.csv", header = T, sep = ",")
-tot_sta <-as.data.frame(xtabs(~Subarea,data = northsea))
-allsp_length_range.s <- as.matrix(read.table("D:\\Ruo_data\\2019_Paper_Publish\\Code\\Result_data_for_analysis\\allsp_length_range_16class.txt"))
+wd = "D:/Ruo_data/2019_Paper_Publish/Publish"
+setwd(wd)
 
-source("D:\\Ruo_data\\2019_Paper_Publish\\Code\\Function_Habitat_information.R")
-source("D:\\Ruo_data\\2019_Paper_Publish\\Code\\Code_for_bodysize_and_temperature_After20200310\\16_size_class\\Function_SizeBased_TL_16.R")
+northsea <- read.csv("./SizeAggregTend_data/compiled/CPUE_per_length_per_subarea_clean.csv", header = T, sep = ",")
+allsp_length_range.s <- as.matrix(read.table("./SizeAggregTend_data/compiled/allsp_length_range_16class.txt"))
 
-# make the subarea symbol become true latitude and longtitude
-lat <-seq(49.75,61.75,0.5)
-long <- seq(-3.5,12.5,1)
+#### spatial information #####
+subarea_symb <- read.csv("./SizeAggregTend_data/compiled/subarea_symb.csv")
+subarea_symb <- subarea_symb[,-1]
 
-subarea_symb <- data.frame(subarea=tot_sta[,1],
-                           lat = lat[as.integer(factor(substr(tot_sta[,1],1,2)))],
-                           long = long[as.integer(factor(substr(tot_sta[,1],3,4)))])
+#### Function needed
+source("./SizeAggregTend_code/Habitat_Information/Function_Habitat_information.R")
+source("./SizeAggregTend_code/Analysis/Function_SizeBased_TL_16.R")
 
 
-############################################################## species analysis
-# each sp #############################
+############################################################## 
+### Size-based TL
+############################################################## 
+
 sp_name <- c("Clupea harengus","Gadus morhua","Melanogrammus aeglefinus",
              "Merlangius merlangus","Pleuronectes platessa", 
              "Pollachius virens","Scomber scombrus",
@@ -26,6 +26,7 @@ sp_name <- c("Clupea harengus","Gadus morhua","Melanogrammus aeglefinus",
 
 sp_common_name <- c("Herring","Cod","Haddock","Whiting","Plaice","Saithe",
                     "Mackerel","Sprat","Norwaypout")
+
 
 all_TL_result <- NULL
 
@@ -44,17 +45,17 @@ for(i in 1:9){
   sp_length_range.1 <- allsp_length_range.s[i,]
   sp_length_range.3 <- allsp_length_range.s[i+9,]
   
-  Path="D:\\Ruo_data\\2019_Paper_Publish\\Figure\\appendix\\sp_sizeTL\\"
+  Path="./SizeAggregTend_data/output/1_size_TL/sizeTL_plot/"
   
-  png(paste(Path,sp_c_name,"Q1.png",sep=""), width=6, height=5, units = "in",res=300)
-  sp_TL.Q1 <- sb_TL_fuc(sp.2.Q1,sp_length_range.1,sp.hab.info,spe.name=paste(sp_c_name," Q1"))
+  png(paste0(Path,sp_c_name,"Q1.png"), width=6, height=5, units = "in",res=300)
+  sp_TL.Q1 <- sb_TL_fuc(sp.2.Q1,sp_length_range.1,sp.hab.info,spe.name=paste(sp_c_name," Q1"),"./SizeAggregTend_data/output/1_size_TL/TL999boot/")
   dev.off()
   
-  png(paste(Path,sp_c_name,"Q3.png",sep=""), width=6, height=5, units = "in",res=300)
-  sp_TL.Q3 <- sb_TL_fuc(sp.2.Q3,sp_length_range.3,sp.hab.info,spe.name=paste(sp_c_name," Q3"))
+  png(paste0(Path,sp_c_name,"Q3.png"), width=6, height=5, units = "in",res=300)
+  sp_TL.Q3 <- sb_TL_fuc(sp.2.Q3,sp_length_range.3,sp.hab.info,spe.name=paste(sp_c_name," Q3"),"./SizeAggregTend_data/output/1_size_TL/TL999boot/")
   dev.off()
   
   all_TL_result <- rbind(all_TL_result,sp_TL.Q1,sp_TL.Q3)
 }
 
-write.csv(all_TL_result,"D:\\Ruo_data\\2019_Paper_Publish\\Code\\Result_data_for_analysis\\all_TL_result_16class.csv")
+write.csv(all_TL_result,"./SizeAggregTend_data/output/1_size_TL/all_TL_result_16class.csv")
