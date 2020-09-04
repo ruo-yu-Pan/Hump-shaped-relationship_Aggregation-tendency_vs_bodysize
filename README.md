@@ -10,12 +10,12 @@ Raw data including fishery survey data, sea bottom tempeature (SBT), and fishing
 * Raw data for sea surface temperature (SST) is too big to upload. If you need the raw SST data, Please download it at the links provided in the paper (https://psl.noaa.gov/data/gridded/data.noaa.oisst.v2.highres.html).
 
 
-##### $diams 3 kinds of Rscript
+#### 3 kinds of Rscript
 *Script* :   The R script with   **"Script"**  at the beginning of the name contains the main code for data compilation and analysis in this study.  
 *Function* : The R script with **"Function"** at the beginning of the name include the function needed in the "Script"  
 *Plot* :     The R script with   **"Plot"**   at the beginning of the name is mainly for plotting. 
 
-##### $diams Repository structure
+#### Repository structure
 I categorized the code into 4 groups, which is stored as four folders: 
 - Habitat_information: species habitat information
 - Size_information: Observe data and specify sp-specific length range and sp-specific length bin
