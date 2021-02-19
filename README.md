@@ -22,11 +22,13 @@ I categorized the code into 4 groups, which is stored as four folders:
 - Temp_information: Function and Script for collating SBT and SST data are included
 - Analysis: size-based Taylor's power law
 
+There are other two Script: **Maturity.R** and **SexRatio.R**
+
 
 # Step by Step Analysis
 1. Download data from the repository on Zenodo, and save it with the name "SizeAggregTend_data".
 2. Download code and (1) save at the same path as "SizeAggregation_data" and (2) named it "SizeAggregTend_code"
-2. Run the *Script* code in the folder **Habitat_information**, **Size_information**, and **Temp_information** in order to process raw data.  
+2. Run the **Maturity.R** and the *Script* code in the folder **Habitat_information**, **Size_information**, **Temp_information** in order to process raw data.  
   These scripts process the raw data, and save the compiled data in "compiled" directory.  
 3. Run the *Script* code in the folder **Analysis** in order, from *Script_1* to *Script_5*
 
