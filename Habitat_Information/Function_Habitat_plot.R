@@ -36,6 +36,6 @@ habitat_plot_func <- function(sp_name="Gadus morhua",sp_common_name){
   points(sp.hab.info[[1]][,2],sp.hab.info[[1]][,1],pch=19,cex=0.5)
   polygon(sp.hab.info[[1]][sp.hab.info[[2]],2],
           sp.hab.info[[1]][sp.hab.info[[2]],1],col=rgb(0,0,0,alpha=0.3))
-  text(pos=4,x=-9,y=49,label=sp_common_name,family="newrom",cex=1.4)
+  text(pos=4,x=-9,y=49,label=sp_common_name,cex=1.4)
 }
 

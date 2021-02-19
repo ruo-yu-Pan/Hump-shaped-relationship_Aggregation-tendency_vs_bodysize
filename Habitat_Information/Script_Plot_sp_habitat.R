@@ -1,4 +1,4 @@
-
+windowsFonts(newrom = "Times New Roman")
 
 wd = "D:/Ruo_data/2019_Paper_Publish/Publish"
 setwd(wd)
@@ -31,12 +31,12 @@ source("./SizeAggregTend_code/Habitat_Information/Function_Habitat_plot.R")
 
 # for each sp 
 
-jpeg("./SizeAggregTend_data/output/fig/FigS3_sp_Habitat.jpeg", width=5, height=5, units = "in",res=300)
+jpeg("./SizeAggregTend_data/output/fig/Appendix/Fig_sp_Habitat.jpeg", width=1800, height=1800, units = "px",res=300)
 par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(4,4,1,1))
 for (i in 1:6){
   if(i%%3==1){
     habitat_plot_func(sp_name[i],sp_common_name[i])
-    axis(side = 2,family=c("newrom"))
+    axis(side = 2)
     box(lwd=1)
   }
   if(i%%3!=1){
@@ -46,17 +46,17 @@ for (i in 1:6){
 }
 for(i in 7){
   habitat_plot_func(sp_name[i],sp_common_name[i])
-  axis(side =1,family=c("newrom"))
-  axis(side = 2,family=c("newrom"))
+  axis(side =1)
+  axis(side = 2)
   box(lwd=1)
 }
 for(i in c(8,9)){
   habitat_plot_func(sp_name[i],sp_common_name[i])
-  axis(side =1,family=c("newrom"))
+  axis(side =1)
   box(lwd=1)
 }
-mtext(text="Latitude", side=2, out=T,line=2,family=c("newrom"))
-mtext(text="Longtitude", side=1, out=T,line=2,family=c("newrom"))
+mtext(text="Latitude", side=2, out=T,line=2)
+mtext(text="Longtitude", side=1, out=T,line=2)
 
 dev.off()
 

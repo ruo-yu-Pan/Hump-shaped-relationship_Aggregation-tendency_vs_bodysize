@@ -1,12 +1,13 @@
 
+# 20210115 change maturity data
 # size information of each species and convert them into files
 
 wd = "D:/Ruo_data/2019_Paper_Publish/Publish"
 setwd(wd)
 # mature length ################################################
 # data from Tu et al.'s study
-mature.L <- c(253,697,335,202,266,554,250,115,190)
-write.table(mature.L,"./SizeAggregTend_data/compiled/mature_L.txt")
+mature.L <- c(230,540,270,210,220,490,260,120,140)
+write.table(mature.L,"./SizeAggregTend_data/compiled/NEW_mature_L.txt")
 
 
 

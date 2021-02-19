@@ -10,7 +10,7 @@ source("D:/Ruo_data/2019_Paper_Publish/Publish/SizeAggregTend_code/Habitat_Infor
 # sp_length_range.s: the length range for specific species and specific quarter
 
 
-size_mean_bottom_T_fuc <- function(data=Temp.Q1,
+size_bottom_T_fuc <- function(data=Temp.Q1,
                          sp_s_name=sp_name[i],
                          quarter=1,
                          sp_length_range.s=allsp_length_range.s[i,]){
@@ -49,8 +49,7 @@ size_mean_bottom_T_fuc <- function(data=Temp.Q1,
   ## define size range #######################################################
   species <- northsea[which(northsea$Species== sp_s_name & northsea$Year>=1991 & northsea$Year<=2015 & northsea$Quarter ==quarter),]
   
-  #size_cv_bT <- NULL
-  size_mean_bT <- NULL
+  size_bT_info <- NULL
   for(j in 1:16){
     fish_stage <- species[which(species$LngtClass < sp_length_range.s[j+1] & 
                                   species$LngtClass >= sp_length_range.s[j]),]
@@ -62,10 +61,10 @@ size_mean_bottom_T_fuc <- function(data=Temp.Q1,
     bottom_T_in_habitat <- bottom_T_0
     bottom_T_in_habitat[which(is.nan(bottom_T_in_habitat)==T)] <- NA
     bottom_T_in_habitat[as.numeric(stage_hab_info[[3]][["subarea"]]),] <- NA 
-    #bottom_T_in_habitat_cv <- mean(apply(bottom_T_in_habitat,1,cv,na.rm=T),na.rm=T)
-    size_mean_bT <- c(size_mean_bT,mean(bottom_T_in_habitat,na.rm = T))
-    #size_cv_bT <- c(size_cv_bT,bottom_T_in_habitat_cv)
+    size_cv_bT <- mean(apply(bottom_T_in_habitat,1,cv,na.rm=T),na.rm=T)
+    size_mean_bT <- mean(bottom_T_in_habitat,na.rm = T)
+    size_bT_info <- rbind(size_bT_info,c(size_mean_bT,size_cv_bT))
   }
-  return(size_mean_bT)
+  return(size_bT_info)
 }
 

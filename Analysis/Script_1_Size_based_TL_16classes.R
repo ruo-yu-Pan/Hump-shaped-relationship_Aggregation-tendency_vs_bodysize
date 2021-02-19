@@ -45,7 +45,7 @@ for(i in 1:9){
   sp_length_range.1 <- allsp_length_range.s[i,]
   sp_length_range.3 <- allsp_length_range.s[i+9,]
   
-  Path="./SizeAggregTend_data/output/1_size_TL/sizeTL_plot/"
+  Path="./SizeAggregTend_data/output/fig/sizeTL_plot/"
   
   png(paste0(Path,sp_c_name,"Q1.png"), width=6, height=5, units = "in",res=300)
   sp_TL.Q1 <- sb_TL_fuc(sp.2.Q1,sp_length_range.1,sp.hab.info,spe.name=paste(sp_c_name," Q1"),"./SizeAggregTend_data/output/1_size_TL/TL999boot/")

@@ -1,3 +1,7 @@
+
+library("dplyr")
+
+
 windowsFonts(newrom = windowsFont("Times New Roman"))
 
 ######################################################################
@@ -42,36 +46,41 @@ lon_vec =  seq(min_lon-0.5,max_lon+0.5,grid_size_lon)
 
 
 ########################################################
-# calculate mean bottom temperature 
+# calculate mean and cv of temperature 
 ########################################################
-source("./SizeAggregTend_code/Temp_information/bottomT/Function_mean_bottomT_in_size_specific_habitat.R")
+source("./SizeAggregTend_code/Temp_information/Function_SST_in_size_specific_habitat.R")
+source("./SizeAggregTend_code/Temp_information/Function_bottomT_in_size_specific_habitat.R")
+
 
 # each sp
 source("./SizeAggregTend_code/Habitat_Information/Function_Habitat_information.R")
 
 
-allsp_bT <- NULL
+allsp_Temp <- NULL
 
 for(i in 1:9){
-  bT_1 <- size_mean_bottom_T_fuc(Temp.Q1,sp_name[i],1,allsp_length_range.s[i,])
-  allsp_bT <- rbind(allsp_bT,bT_1)
+  if(i %in% c(1,7,8)){
+    SST_1 <- size_SST_fuc(Temp.Q1,sp_name[i],1,allsp_length_range.s[i,])
+    allsp_Temp <- rbind(allsp_Temp,SST_1)
+  }else{
+    bT_1 <- size_bottom_T_fuc(Temp.Q1,sp_name[i],1,allsp_length_range.s[i,])
+    allsp_Temp <- rbind(allsp_Temp,bT_1)
+  }
 }
 
 for(i in 1:9){
-  bT_3 <- size_mean_bottom_T_fuc(Temp.Q3,sp_name[i],3,allsp_length_range.s[i+9,])
-  allsp_bT <- rbind(allsp_bT,bT_3)
+  if(i %in% c(1,7,8)){
+    SST_3 <- size_SST_fuc(Temp.Q3,sp_name[i],1,allsp_length_range.s[i,])
+    allsp_Temp <- rbind(allsp_Temp,SST_3)
+  }else{
+    bT_3 <- size_bottom_T_fuc(Temp.Q3,sp_name[i],3,allsp_length_range.s[i+9,])
+    allsp_Temp <- rbind(allsp_Temp,bT_3)
+  }
 }
 
-write.csv(allsp_bT,"./SizeAggregTend_data/compiled/bottomT/mean_bottom_Temperature.csv")
+allsp_Temp <- as.data.frame(allsp_Temp)
+allsp_Temp$species <- rep(rep(c(1:9),each=16),2)
+allsp_Temp$quarter <- rep(c(1,3),each=144)
+allsp_Temp <- allsp_Temp %>% arrange(species,quarter)
 
-
-# analysis ########################################################
-allsp_bT_tras <- NULL
-for(j in 1:9){
-  allsp_bT_tras <- c(allsp_bT_tras,allsp_bT[j,],allsp_bT[j+9,])
-}
-
-write.csv(allsp_bT_tras,"./SizeAggregTend_data/compiled/bottomT/mean_bottom_Temperature_trans.csv")
-
-
-
+write.csv(allsp_Temp,"./SizeAggregTend_data/compiled/Temperature_info.csv")
